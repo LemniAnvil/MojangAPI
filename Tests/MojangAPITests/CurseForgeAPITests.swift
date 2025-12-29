@@ -10,11 +10,18 @@ import XCTest
 final class CurseForgeAPITests: XCTestCase {
 
   var client: CurseForgeAPIClient!
-  let testAPIKey = "$2a$10$JjTHtQGKRawvMrOSkmVvDu4intEEw91ug95/A1qpHzjRJrTcjpX5G"
 
   override func setUp() {
     super.setUp()
-    let config = CurseForgeAPIConfiguration(apiKey: testAPIKey)
+
+    // 从环境变量读取 API Key
+    // 运行测试前需要设置: export CURSEFORGE_API_KEY="your_api_key"
+    guard let apiKey = ProcessInfo.processInfo.environment["CURSEFORGE_API_KEY"] else {
+      XCTFail("请设置环境变量 CURSEFORGE_API_KEY")
+      return
+    }
+
+    let config = CurseForgeAPIConfiguration(apiKey: apiKey)
     client = CurseForgeAPIClient(configuration: config)
   }
 
