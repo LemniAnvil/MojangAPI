@@ -83,6 +83,29 @@ public class MinecraftAPIClient {
 
   // MARK: - 玩家档案 API
 
+  /// ⚠️ 已弃用：通过 UUID 获取玩家名称历史记录
+  ///
+  /// Mojang 于 2022 年 9 月 13 日移除了此 API 端点。
+  /// 此方法将始终返回 404 错误。保留此方法仅供历史参考。
+  ///
+  /// - Parameter uuid: 玩家 UUID（可以带或不带横杠）
+  /// - Returns: 名称历史记录数组（此 API 已不可用，将抛出错误）
+  /// - Throws: `MinecraftAPIError.apiError` 因为端点已被移除
+  ///
+  /// 参考资料:
+  /// - https://help.minecraft.net/hc/en-us/articles/8969841895693-Username-History-API-Removal-FAQ
+  @available(*, deprecated, message: "名称历史记录 API 已于 2022 年 9 月被 Mojang 移除，此端点不再可用")
+  public func fetchNameHistory(byUUID uuid: String) async throws -> NameHistory {
+    guard !uuid.trimmingCharacters(in: .whitespaces).isEmpty else {
+      throw MinecraftAPIError.emptyUUID
+    }
+
+    // 移除 UUID 中的横杠
+    let cleanUUID = uuid.replacingOccurrences(of: "-", with: "")
+    let url = try buildURL("\(configuration.apiBaseURL)/user/profiles/\(cleanUUID)/names")
+    return try await request(url: url, notFoundError: .playerNotFound(uuid))
+  }
+
   /// 通过用户名获取 UUID（轻量级接口）
   public func fetchPlayerUUID(byName name: String) async throws -> PlayerUUID {
     guard !name.trimmingCharacters(in: .whitespaces).isEmpty else {
