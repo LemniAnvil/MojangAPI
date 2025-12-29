@@ -6,7 +6,7 @@
 import Foundation
 
 /// 版本信息
-public struct VersionInfo: Codable, Identifiable {
+public struct VersionInfo: Codable, Identifiable, Hashable, Equatable {
 
   /// 版本 ID（如 "1.21.11"）
   public let id: String
@@ -39,5 +39,15 @@ public struct VersionInfo: Codable, Identifiable {
     self.releaseTime = releaseTime
     self.sha1 = sha1
     self.complianceLevel = complianceLevel
+  }
+
+  // MARK: - Hashable & Equatable
+
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+  }
+
+  public static func == (lhs: VersionInfo, rhs: VersionInfo) -> Bool {
+    lhs.id == rhs.id
   }
 }

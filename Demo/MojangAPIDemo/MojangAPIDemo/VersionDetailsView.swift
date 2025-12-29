@@ -12,6 +12,9 @@ struct VersionDetailsView: View {
   @State private var isLoading = false
   @State private var errorMessage: String?
   @State private var selectedOS = "osx"
+  @State private var availableVersions: [VersionInfo] = []
+  @State private var selectedVersionFromPicker: VersionInfo?
+  @State private var filterType: VersionType? = nil
 
   private let client = MinecraftAPIClient()
   private let osOptions = ["osx", "windows", "linux"]
@@ -21,6 +24,42 @@ struct VersionDetailsView: View {
       Form {
         // 搜索区域
         Section("查询版本") {
+          // 版本选择器
+          if !availableVersions.isEmpty {
+            VStack(alignment: .leading, spacing: 8) {
+              HStack {
+                Text("从列表选择:")
+                  .font(.subheadline)
+                Spacer()
+                Picker("筛选类型", selection: $filterType) {
+                  Text("全部").tag(nil as VersionType?)
+                  Text("正式版").tag(VersionType.release as VersionType?)
+                  Text("快照版").tag(VersionType.snapshot as VersionType?)
+                  Text("旧测试版").tag(VersionType.oldBeta as VersionType?)
+                  Text("旧内测版").tag(VersionType.oldAlpha as VersionType?)
+                }
+                .pickerStyle(.menu)
+              }
+
+              Picker("选择版本", selection: $selectedVersionFromPicker) {
+                Text("请选择...").tag(nil as VersionInfo?)
+                ForEach(filteredVersions, id: \.id) { version in
+                  Text("\(version.id) (\(version.type.rawValue))")
+                    .tag(version as VersionInfo?)
+                }
+              }
+              .pickerStyle(.menu)
+              .onChange(of: selectedVersionFromPicker) { _, newValue in
+                if let version = newValue {
+                  versionId = version.id
+                }
+              }
+            }
+
+            Divider()
+          }
+
+          // 手动输入
           TextField("版本 ID (例如: 1.21.4)", text: $versionId)
             .autocorrectionDisabled()
 
@@ -166,6 +205,27 @@ struct VersionDetailsView: View {
         }
       }
       .navigationTitle("版本详情")
+      .task {
+        await loadVersionList()
+      }
+    }
+  }
+
+  // 计算属性：根据筛选类型过滤版本
+  private var filteredVersions: [VersionInfo] {
+    if let filterType = filterType {
+      return availableVersions.filter { $0.type == filterType }
+    }
+    return availableVersions
+  }
+
+  private func loadVersionList() async {
+    do {
+      let manifest = try await client.fetchVersionManifest()
+      availableVersions = manifest.versions
+    } catch {
+      // 静默失败，用户仍然可以手动输入版本号
+      print("无法加载版本列表: \(error)")
     }
   }
 
