@@ -1,0 +1,860 @@
+{
+  "summary": {
+    "total_versions_analyzed": 12,
+    "total_unique_fields": 69,
+    "universal_fields_count": 31,
+    "partial_fields_count": 1,
+    "rare_fields_count": 37
+  },
+  "universal_fields": [
+    "assetIndex (dict)",
+    "assetIndex.id (str)",
+    "assetIndex.sha1 (str)",
+    "assetIndex.size (int)",
+    "assetIndex.totalSize (int)",
+    "assetIndex.url (str)",
+    "assets (str)",
+    "complianceLevel (int)",
+    "downloads (dict)",
+    "downloads.client (dict)",
+    "downloads.client.sha1 (str)",
+    "downloads.client.size (int)",
+    "downloads.client.url (str)",
+    "id (str)",
+    "javaVersion (dict)",
+    "javaVersion.component (str)",
+    "javaVersion.majorVersion (int)",
+    "libraries (list)",
+    "libraries[] (dict)",
+    "libraries[].downloads (dict)",
+    "libraries[].downloads.artifact (dict)",
+    "libraries[].downloads.artifact.path (str)",
+    "libraries[].downloads.artifact.sha1 (str)",
+    "libraries[].downloads.artifact.size (int)",
+    "libraries[].downloads.artifact.url (str)",
+    "libraries[].name (str)",
+    "mainClass (str)",
+    "minimumLauncherVersion (int)",
+    "releaseTime (str)",
+    "time (str)",
+    "type (str)"
+  ],
+  "partial_fields": {
+    "minecraftArguments (str)": {
+      "coverage_percent": 75.0,
+      "versions": [
+        "1.3",
+        "1.11.2",
+        "1.0",
+        "b1.8.1",
+        "b1.5",
+        "b1.0",
+        "a1.2.6",
+        "a1.0.17_04",
+        "rd-132211"
+      ]
+    }
+  },
+  "rare_fields": {
+    "arguments (dict)": {
+      "coverage_percent": 25.0,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.21.11"
+      ]
+    },
+    "arguments.game (list)": {
+      "coverage_percent": 25.0,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.21.11"
+      ]
+    },
+    "arguments.game[] (str)": {
+      "coverage_percent": 25.0,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.21.11"
+      ]
+    },
+    "arguments.jvm (list)": {
+      "coverage_percent": 25.0,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.21.11"
+      ]
+    },
+    "arguments.jvm[] (dict)": {
+      "coverage_percent": 25.0,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.21.11"
+      ]
+    },
+    "arguments.jvm[].rules (list)": {
+      "coverage_percent": 25.0,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.21.11"
+      ]
+    },
+    "arguments.jvm[].rules[] (dict)": {
+      "coverage_percent": 25.0,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.21.11"
+      ]
+    },
+    "arguments.jvm[].rules[].action (str)": {
+      "coverage_percent": 25.0,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.21.11"
+      ]
+    },
+    "arguments.jvm[].rules[].os (dict)": {
+      "coverage_percent": 25.0,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.21.11"
+      ]
+    },
+    "arguments.jvm[].rules[].os.name (str)": {
+      "coverage_percent": 25.0,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.21.11"
+      ]
+    },
+    "arguments.jvm[].value (list)": {
+      "coverage_percent": 25.0,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.21.11"
+      ]
+    },
+    "arguments.jvm[].value[] (str)": {
+      "coverage_percent": 25.0,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.21.11"
+      ]
+    },
+    "downloads.client_mappings (dict)": {
+      "coverage_percent": 8.333333333333332,
+      "versions": [
+        "1.21.11"
+      ]
+    },
+    "downloads.client_mappings.sha1 (str)": {
+      "coverage_percent": 8.333333333333332,
+      "versions": [
+        "1.21.11"
+      ]
+    },
+    "downloads.client_mappings.size (int)": {
+      "coverage_percent": 8.333333333333332,
+      "versions": [
+        "1.21.11"
+      ]
+    },
+    "downloads.client_mappings.url (str)": {
+      "coverage_percent": 8.333333333333332,
+      "versions": [
+        "1.21.11"
+      ]
+    },
+    "downloads.server (dict)": {
+      "coverage_percent": 41.66666666666667,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.3",
+        "1.21.11",
+        "1.11.2"
+      ]
+    },
+    "downloads.server.sha1 (str)": {
+      "coverage_percent": 41.66666666666667,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.3",
+        "1.21.11",
+        "1.11.2"
+      ]
+    },
+    "downloads.server.size (int)": {
+      "coverage_percent": 41.66666666666667,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.3",
+        "1.21.11",
+        "1.11.2"
+      ]
+    },
+    "downloads.server.url (str)": {
+      "coverage_percent": 41.66666666666667,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.3",
+        "1.21.11",
+        "1.11.2"
+      ]
+    },
+    "downloads.server_mappings (dict)": {
+      "coverage_percent": 8.333333333333332,
+      "versions": [
+        "1.21.11"
+      ]
+    },
+    "downloads.server_mappings.sha1 (str)": {
+      "coverage_percent": 8.333333333333332,
+      "versions": [
+        "1.21.11"
+      ]
+    },
+    "downloads.server_mappings.size (int)": {
+      "coverage_percent": 8.333333333333332,
+      "versions": [
+        "1.21.11"
+      ]
+    },
+    "downloads.server_mappings.url (str)": {
+      "coverage_percent": 8.333333333333332,
+      "versions": [
+        "1.21.11"
+      ]
+    },
+    "downloads.windows_server (dict)": {
+      "coverage_percent": 8.333333333333332,
+      "versions": [
+        "1.3"
+      ]
+    },
+    "downloads.windows_server.sha1 (str)": {
+      "coverage_percent": 8.333333333333332,
+      "versions": [
+        "1.3"
+      ]
+    },
+    "downloads.windows_server.size (int)": {
+      "coverage_percent": 8.333333333333332,
+      "versions": [
+        "1.3"
+      ]
+    },
+    "downloads.windows_server.url (str)": {
+      "coverage_percent": 8.333333333333332,
+      "versions": [
+        "1.3"
+      ]
+    },
+    "logging (dict)": {
+      "coverage_percent": 33.33333333333333,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.21.11",
+        "1.11.2"
+      ]
+    },
+    "logging.client (dict)": {
+      "coverage_percent": 33.33333333333333,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.21.11",
+        "1.11.2"
+      ]
+    },
+    "logging.client.argument (str)": {
+      "coverage_percent": 33.33333333333333,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.21.11",
+        "1.11.2"
+      ]
+    },
+    "logging.client.file (dict)": {
+      "coverage_percent": 33.33333333333333,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.21.11",
+        "1.11.2"
+      ]
+    },
+    "logging.client.file.id (str)": {
+      "coverage_percent": 33.33333333333333,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.21.11",
+        "1.11.2"
+      ]
+    },
+    "logging.client.file.sha1 (str)": {
+      "coverage_percent": 33.33333333333333,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.21.11",
+        "1.11.2"
+      ]
+    },
+    "logging.client.file.size (int)": {
+      "coverage_percent": 33.33333333333333,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.21.11",
+        "1.11.2"
+      ]
+    },
+    "logging.client.file.url (str)": {
+      "coverage_percent": 33.33333333333333,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.21.11",
+        "1.11.2"
+      ]
+    },
+    "logging.client.type (str)": {
+      "coverage_percent": 33.33333333333333,
+      "versions": [
+        "26.1-snapshot-1",
+        "1.14.4-pre5",
+        "1.21.11",
+        "1.11.2"
+      ]
+    }
+  },
+  "version_schemas": {
+    "26.1-snapshot-1": [
+      "arguments (dict)",
+      "arguments.game (list)",
+      "arguments.game[] (str)",
+      "arguments.jvm (list)",
+      "arguments.jvm[] (dict)",
+      "arguments.jvm[].rules (list)",
+      "arguments.jvm[].rules[] (dict)",
+      "arguments.jvm[].rules[].action (str)",
+      "arguments.jvm[].rules[].os (dict)",
+      "arguments.jvm[].rules[].os.name (str)",
+      "arguments.jvm[].value (list)",
+      "arguments.jvm[].value[] (str)",
+      "assetIndex (dict)",
+      "assetIndex.id (str)",
+      "assetIndex.sha1 (str)",
+      "assetIndex.size (int)",
+      "assetIndex.totalSize (int)",
+      "assetIndex.url (str)",
+      "assets (str)",
+      "complianceLevel (int)",
+      "downloads (dict)",
+      "downloads.client (dict)",
+      "downloads.client.sha1 (str)",
+      "downloads.client.size (int)",
+      "downloads.client.url (str)",
+      "downloads.server (dict)",
+      "downloads.server.sha1 (str)",
+      "downloads.server.size (int)",
+      "downloads.server.url (str)",
+      "id (str)",
+      "javaVersion (dict)",
+      "javaVersion.component (str)",
+      "javaVersion.majorVersion (int)",
+      "libraries (list)",
+      "libraries[] (dict)",
+      "libraries[].downloads (dict)",
+      "libraries[].downloads.artifact (dict)",
+      "libraries[].downloads.artifact.path (str)",
+      "libraries[].downloads.artifact.sha1 (str)",
+      "libraries[].downloads.artifact.size (int)",
+      "libraries[].downloads.artifact.url (str)",
+      "libraries[].name (str)",
+      "logging (dict)",
+      "logging.client (dict)",
+      "logging.client.argument (str)",
+      "logging.client.file (dict)",
+      "logging.client.file.id (str)",
+      "logging.client.file.sha1 (str)",
+      "logging.client.file.size (int)",
+      "logging.client.file.url (str)",
+      "logging.client.type (str)",
+      "mainClass (str)",
+      "minimumLauncherVersion (int)",
+      "releaseTime (str)",
+      "time (str)",
+      "type (str)"
+    ],
+    "1.14.4-pre5": [
+      "arguments (dict)",
+      "arguments.game (list)",
+      "arguments.game[] (str)",
+      "arguments.jvm (list)",
+      "arguments.jvm[] (dict)",
+      "arguments.jvm[].rules (list)",
+      "arguments.jvm[].rules[] (dict)",
+      "arguments.jvm[].rules[].action (str)",
+      "arguments.jvm[].rules[].os (dict)",
+      "arguments.jvm[].rules[].os.name (str)",
+      "arguments.jvm[].value (list)",
+      "arguments.jvm[].value[] (str)",
+      "assetIndex (dict)",
+      "assetIndex.id (str)",
+      "assetIndex.sha1 (str)",
+      "assetIndex.size (int)",
+      "assetIndex.totalSize (int)",
+      "assetIndex.url (str)",
+      "assets (str)",
+      "complianceLevel (int)",
+      "downloads (dict)",
+      "downloads.client (dict)",
+      "downloads.client.sha1 (str)",
+      "downloads.client.size (int)",
+      "downloads.client.url (str)",
+      "downloads.server (dict)",
+      "downloads.server.sha1 (str)",
+      "downloads.server.size (int)",
+      "downloads.server.url (str)",
+      "id (str)",
+      "javaVersion (dict)",
+      "javaVersion.component (str)",
+      "javaVersion.majorVersion (int)",
+      "libraries (list)",
+      "libraries[] (dict)",
+      "libraries[].downloads (dict)",
+      "libraries[].downloads.artifact (dict)",
+      "libraries[].downloads.artifact.path (str)",
+      "libraries[].downloads.artifact.sha1 (str)",
+      "libraries[].downloads.artifact.size (int)",
+      "libraries[].downloads.artifact.url (str)",
+      "libraries[].name (str)",
+      "logging (dict)",
+      "logging.client (dict)",
+      "logging.client.argument (str)",
+      "logging.client.file (dict)",
+      "logging.client.file.id (str)",
+      "logging.client.file.sha1 (str)",
+      "logging.client.file.size (int)",
+      "logging.client.file.url (str)",
+      "logging.client.type (str)",
+      "mainClass (str)",
+      "minimumLauncherVersion (int)",
+      "releaseTime (str)",
+      "time (str)",
+      "type (str)"
+    ],
+    "1.3": [
+      "assetIndex (dict)",
+      "assetIndex.id (str)",
+      "assetIndex.sha1 (str)",
+      "assetIndex.size (int)",
+      "assetIndex.totalSize (int)",
+      "assetIndex.url (str)",
+      "assets (str)",
+      "complianceLevel (int)",
+      "downloads (dict)",
+      "downloads.client (dict)",
+      "downloads.client.sha1 (str)",
+      "downloads.client.size (int)",
+      "downloads.client.url (str)",
+      "downloads.server (dict)",
+      "downloads.server.sha1 (str)",
+      "downloads.server.size (int)",
+      "downloads.server.url (str)",
+      "downloads.windows_server (dict)",
+      "downloads.windows_server.sha1 (str)",
+      "downloads.windows_server.size (int)",
+      "downloads.windows_server.url (str)",
+      "id (str)",
+      "javaVersion (dict)",
+      "javaVersion.component (str)",
+      "javaVersion.majorVersion (int)",
+      "libraries (list)",
+      "libraries[] (dict)",
+      "libraries[].downloads (dict)",
+      "libraries[].downloads.artifact (dict)",
+      "libraries[].downloads.artifact.path (str)",
+      "libraries[].downloads.artifact.sha1 (str)",
+      "libraries[].downloads.artifact.size (int)",
+      "libraries[].downloads.artifact.url (str)",
+      "libraries[].name (str)",
+      "mainClass (str)",
+      "minecraftArguments (str)",
+      "minimumLauncherVersion (int)",
+      "releaseTime (str)",
+      "time (str)",
+      "type (str)"
+    ],
+    "1.21.11": [
+      "arguments (dict)",
+      "arguments.game (list)",
+      "arguments.game[] (str)",
+      "arguments.jvm (list)",
+      "arguments.jvm[] (dict)",
+      "arguments.jvm[].rules (list)",
+      "arguments.jvm[].rules[] (dict)",
+      "arguments.jvm[].rules[].action (str)",
+      "arguments.jvm[].rules[].os (dict)",
+      "arguments.jvm[].rules[].os.name (str)",
+      "arguments.jvm[].value (list)",
+      "arguments.jvm[].value[] (str)",
+      "assetIndex (dict)",
+      "assetIndex.id (str)",
+      "assetIndex.sha1 (str)",
+      "assetIndex.size (int)",
+      "assetIndex.totalSize (int)",
+      "assetIndex.url (str)",
+      "assets (str)",
+      "complianceLevel (int)",
+      "downloads (dict)",
+      "downloads.client (dict)",
+      "downloads.client.sha1 (str)",
+      "downloads.client.size (int)",
+      "downloads.client.url (str)",
+      "downloads.client_mappings (dict)",
+      "downloads.client_mappings.sha1 (str)",
+      "downloads.client_mappings.size (int)",
+      "downloads.client_mappings.url (str)",
+      "downloads.server (dict)",
+      "downloads.server.sha1 (str)",
+      "downloads.server.size (int)",
+      "downloads.server.url (str)",
+      "downloads.server_mappings (dict)",
+      "downloads.server_mappings.sha1 (str)",
+      "downloads.server_mappings.size (int)",
+      "downloads.server_mappings.url (str)",
+      "id (str)",
+      "javaVersion (dict)",
+      "javaVersion.component (str)",
+      "javaVersion.majorVersion (int)",
+      "libraries (list)",
+      "libraries[] (dict)",
+      "libraries[].downloads (dict)",
+      "libraries[].downloads.artifact (dict)",
+      "libraries[].downloads.artifact.path (str)",
+      "libraries[].downloads.artifact.sha1 (str)",
+      "libraries[].downloads.artifact.size (int)",
+      "libraries[].downloads.artifact.url (str)",
+      "libraries[].name (str)",
+      "logging (dict)",
+      "logging.client (dict)",
+      "logging.client.argument (str)",
+      "logging.client.file (dict)",
+      "logging.client.file.id (str)",
+      "logging.client.file.sha1 (str)",
+      "logging.client.file.size (int)",
+      "logging.client.file.url (str)",
+      "logging.client.type (str)",
+      "mainClass (str)",
+      "minimumLauncherVersion (int)",
+      "releaseTime (str)",
+      "time (str)",
+      "type (str)"
+    ],
+    "1.11.2": [
+      "assetIndex (dict)",
+      "assetIndex.id (str)",
+      "assetIndex.sha1 (str)",
+      "assetIndex.size (int)",
+      "assetIndex.totalSize (int)",
+      "assetIndex.url (str)",
+      "assets (str)",
+      "complianceLevel (int)",
+      "downloads (dict)",
+      "downloads.client (dict)",
+      "downloads.client.sha1 (str)",
+      "downloads.client.size (int)",
+      "downloads.client.url (str)",
+      "downloads.server (dict)",
+      "downloads.server.sha1 (str)",
+      "downloads.server.size (int)",
+      "downloads.server.url (str)",
+      "id (str)",
+      "javaVersion (dict)",
+      "javaVersion.component (str)",
+      "javaVersion.majorVersion (int)",
+      "libraries (list)",
+      "libraries[] (dict)",
+      "libraries[].downloads (dict)",
+      "libraries[].downloads.artifact (dict)",
+      "libraries[].downloads.artifact.path (str)",
+      "libraries[].downloads.artifact.sha1 (str)",
+      "libraries[].downloads.artifact.size (int)",
+      "libraries[].downloads.artifact.url (str)",
+      "libraries[].name (str)",
+      "logging (dict)",
+      "logging.client (dict)",
+      "logging.client.argument (str)",
+      "logging.client.file (dict)",
+      "logging.client.file.id (str)",
+      "logging.client.file.sha1 (str)",
+      "logging.client.file.size (int)",
+      "logging.client.file.url (str)",
+      "logging.client.type (str)",
+      "mainClass (str)",
+      "minecraftArguments (str)",
+      "minimumLauncherVersion (int)",
+      "releaseTime (str)",
+      "time (str)",
+      "type (str)"
+    ],
+    "1.0": [
+      "assetIndex (dict)",
+      "assetIndex.id (str)",
+      "assetIndex.sha1 (str)",
+      "assetIndex.size (int)",
+      "assetIndex.totalSize (int)",
+      "assetIndex.url (str)",
+      "assets (str)",
+      "complianceLevel (int)",
+      "downloads (dict)",
+      "downloads.client (dict)",
+      "downloads.client.sha1 (str)",
+      "downloads.client.size (int)",
+      "downloads.client.url (str)",
+      "id (str)",
+      "javaVersion (dict)",
+      "javaVersion.component (str)",
+      "javaVersion.majorVersion (int)",
+      "libraries (list)",
+      "libraries[] (dict)",
+      "libraries[].downloads (dict)",
+      "libraries[].downloads.artifact (dict)",
+      "libraries[].downloads.artifact.path (str)",
+      "libraries[].downloads.artifact.sha1 (str)",
+      "libraries[].downloads.artifact.size (int)",
+      "libraries[].downloads.artifact.url (str)",
+      "libraries[].name (str)",
+      "mainClass (str)",
+      "minecraftArguments (str)",
+      "minimumLauncherVersion (int)",
+      "releaseTime (str)",
+      "time (str)",
+      "type (str)"
+    ],
+    "b1.8.1": [
+      "assetIndex (dict)",
+      "assetIndex.id (str)",
+      "assetIndex.sha1 (str)",
+      "assetIndex.size (int)",
+      "assetIndex.totalSize (int)",
+      "assetIndex.url (str)",
+      "assets (str)",
+      "complianceLevel (int)",
+      "downloads (dict)",
+      "downloads.client (dict)",
+      "downloads.client.sha1 (str)",
+      "downloads.client.size (int)",
+      "downloads.client.url (str)",
+      "id (str)",
+      "javaVersion (dict)",
+      "javaVersion.component (str)",
+      "javaVersion.majorVersion (int)",
+      "libraries (list)",
+      "libraries[] (dict)",
+      "libraries[].downloads (dict)",
+      "libraries[].downloads.artifact (dict)",
+      "libraries[].downloads.artifact.path (str)",
+      "libraries[].downloads.artifact.sha1 (str)",
+      "libraries[].downloads.artifact.size (int)",
+      "libraries[].downloads.artifact.url (str)",
+      "libraries[].name (str)",
+      "mainClass (str)",
+      "minecraftArguments (str)",
+      "minimumLauncherVersion (int)",
+      "releaseTime (str)",
+      "time (str)",
+      "type (str)"
+    ],
+    "b1.5": [
+      "assetIndex (dict)",
+      "assetIndex.id (str)",
+      "assetIndex.sha1 (str)",
+      "assetIndex.size (int)",
+      "assetIndex.totalSize (int)",
+      "assetIndex.url (str)",
+      "assets (str)",
+      "complianceLevel (int)",
+      "downloads (dict)",
+      "downloads.client (dict)",
+      "downloads.client.sha1 (str)",
+      "downloads.client.size (int)",
+      "downloads.client.url (str)",
+      "id (str)",
+      "javaVersion (dict)",
+      "javaVersion.component (str)",
+      "javaVersion.majorVersion (int)",
+      "libraries (list)",
+      "libraries[] (dict)",
+      "libraries[].downloads (dict)",
+      "libraries[].downloads.artifact (dict)",
+      "libraries[].downloads.artifact.path (str)",
+      "libraries[].downloads.artifact.sha1 (str)",
+      "libraries[].downloads.artifact.size (int)",
+      "libraries[].downloads.artifact.url (str)",
+      "libraries[].name (str)",
+      "mainClass (str)",
+      "minecraftArguments (str)",
+      "minimumLauncherVersion (int)",
+      "releaseTime (str)",
+      "time (str)",
+      "type (str)"
+    ],
+    "b1.0": [
+      "assetIndex (dict)",
+      "assetIndex.id (str)",
+      "assetIndex.sha1 (str)",
+      "assetIndex.size (int)",
+      "assetIndex.totalSize (int)",
+      "assetIndex.url (str)",
+      "assets (str)",
+      "complianceLevel (int)",
+      "downloads (dict)",
+      "downloads.client (dict)",
+      "downloads.client.sha1 (str)",
+      "downloads.client.size (int)",
+      "downloads.client.url (str)",
+      "id (str)",
+      "javaVersion (dict)",
+      "javaVersion.component (str)",
+      "javaVersion.majorVersion (int)",
+      "libraries (list)",
+      "libraries[] (dict)",
+      "libraries[].downloads (dict)",
+      "libraries[].downloads.artifact (dict)",
+      "libraries[].downloads.artifact.path (str)",
+      "libraries[].downloads.artifact.sha1 (str)",
+      "libraries[].downloads.artifact.size (int)",
+      "libraries[].downloads.artifact.url (str)",
+      "libraries[].name (str)",
+      "mainClass (str)",
+      "minecraftArguments (str)",
+      "minimumLauncherVersion (int)",
+      "releaseTime (str)",
+      "time (str)",
+      "type (str)"
+    ],
+    "a1.2.6": [
+      "assetIndex (dict)",
+      "assetIndex.id (str)",
+      "assetIndex.sha1 (str)",
+      "assetIndex.size (int)",
+      "assetIndex.totalSize (int)",
+      "assetIndex.url (str)",
+      "assets (str)",
+      "complianceLevel (int)",
+      "downloads (dict)",
+      "downloads.client (dict)",
+      "downloads.client.sha1 (str)",
+      "downloads.client.size (int)",
+      "downloads.client.url (str)",
+      "id (str)",
+      "javaVersion (dict)",
+      "javaVersion.component (str)",
+      "javaVersion.majorVersion (int)",
+      "libraries (list)",
+      "libraries[] (dict)",
+      "libraries[].downloads (dict)",
+      "libraries[].downloads.artifact (dict)",
+      "libraries[].downloads.artifact.path (str)",
+      "libraries[].downloads.artifact.sha1 (str)",
+      "libraries[].downloads.artifact.size (int)",
+      "libraries[].downloads.artifact.url (str)",
+      "libraries[].name (str)",
+      "mainClass (str)",
+      "minecraftArguments (str)",
+      "minimumLauncherVersion (int)",
+      "releaseTime (str)",
+      "time (str)",
+      "type (str)"
+    ],
+    "a1.0.17_04": [
+      "assetIndex (dict)",
+      "assetIndex.id (str)",
+      "assetIndex.sha1 (str)",
+      "assetIndex.size (int)",
+      "assetIndex.totalSize (int)",
+      "assetIndex.url (str)",
+      "assets (str)",
+      "complianceLevel (int)",
+      "downloads (dict)",
+      "downloads.client (dict)",
+      "downloads.client.sha1 (str)",
+      "downloads.client.size (int)",
+      "downloads.client.url (str)",
+      "id (str)",
+      "javaVersion (dict)",
+      "javaVersion.component (str)",
+      "javaVersion.majorVersion (int)",
+      "libraries (list)",
+      "libraries[] (dict)",
+      "libraries[].downloads (dict)",
+      "libraries[].downloads.artifact (dict)",
+      "libraries[].downloads.artifact.path (str)",
+      "libraries[].downloads.artifact.sha1 (str)",
+      "libraries[].downloads.artifact.size (int)",
+      "libraries[].downloads.artifact.url (str)",
+      "libraries[].name (str)",
+      "mainClass (str)",
+      "minecraftArguments (str)",
+      "minimumLauncherVersion (int)",
+      "releaseTime (str)",
+      "time (str)",
+      "type (str)"
+    ],
+    "rd-132211": [
+      "assetIndex (dict)",
+      "assetIndex.id (str)",
+      "assetIndex.sha1 (str)",
+      "assetIndex.size (int)",
+      "assetIndex.totalSize (int)",
+      "assetIndex.url (str)",
+      "assets (str)",
+      "complianceLevel (int)",
+      "downloads (dict)",
+      "downloads.client (dict)",
+      "downloads.client.sha1 (str)",
+      "downloads.client.size (int)",
+      "downloads.client.url (str)",
+      "id (str)",
+      "javaVersion (dict)",
+      "javaVersion.component (str)",
+      "javaVersion.majorVersion (int)",
+      "libraries (list)",
+      "libraries[] (dict)",
+      "libraries[].downloads (dict)",
+      "libraries[].downloads.artifact (dict)",
+      "libraries[].downloads.artifact.path (str)",
+      "libraries[].downloads.artifact.sha1 (str)",
+      "libraries[].downloads.artifact.size (int)",
+      "libraries[].downloads.artifact.url (str)",
+      "libraries[].name (str)",
+      "mainClass (str)",
+      "minecraftArguments (str)",
+      "minimumLauncherVersion (int)",
+      "releaseTime (str)",
+      "time (str)",
+      "type (str)"
+    ]
+  }
+}
