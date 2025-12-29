@@ -83,6 +83,16 @@ public class MinecraftAPIClient {
 
   // MARK: - 玩家档案 API
 
+  /// 通过用户名获取 UUID（轻量级接口）
+  public func fetchPlayerUUID(byName name: String) async throws -> PlayerUUID {
+    guard !name.trimmingCharacters(in: .whitespaces).isEmpty else {
+      throw MinecraftAPIError.emptyPlayerName
+    }
+    let url = try buildURL("\(configuration.apiBaseURL)/users/profiles/minecraft/\(name)")
+    return try await request(url: url, notFoundError: .playerNotFound(name))
+  }
+
+  /// 通过用户名获取完整档案信息
   public func fetchPlayerProfile(byName name: String) async throws -> PlayerProfile {
     guard !name.trimmingCharacters(in: .whitespaces).isEmpty else {
       throw MinecraftAPIError.emptyPlayerName
@@ -91,6 +101,7 @@ public class MinecraftAPIClient {
     return try await request(url: url, notFoundError: .playerNotFound(name))
   }
 
+  /// 通过 UUID 获取完整档案信息
   public func fetchPlayerProfile(byUUID uuid: String, unsigned: Bool = false) async throws
     -> PlayerProfile
   {

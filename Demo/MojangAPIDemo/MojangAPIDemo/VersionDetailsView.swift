@@ -74,19 +74,21 @@ struct VersionDetailsView: View {
           }
           .disabled(versionId.isEmpty || isLoading)
 
-          Button("查询最新正式版") {
-            Task {
-              await searchLatestRelease()
+          HStack {
+            Button("查询最新正式版") {
+              Task {
+                await searchLatestRelease()
+              }
             }
-          }
-          .disabled(isLoading)
+            .disabled(isLoading)
 
-          Button("查询最新快照") {
-            Task {
-              await searchLatestSnapshot()
+            Button("查询最新快照") {
+              Task {
+                await searchLatestSnapshot()
+              }
             }
+            .disabled(isLoading)
           }
-          .disabled(isLoading)
         }
 
         // 错误信息
