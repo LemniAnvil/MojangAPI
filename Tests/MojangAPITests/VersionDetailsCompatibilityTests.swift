@@ -11,6 +11,8 @@ final class VersionDetailsCompatibilityTests: XCTestCase {
 
   // MARK: - Fixture Loading
 
+  /// 加载测试用的 JSON 固件文件
+  /// 使用 #file 定位项目根目录下的 Fixtures 文件夹
   func loadFixture(named filename: String) throws -> Data {
     let testFileURL = URL(fileURLWithPath: #file)
     let testDirectory = testFileURL.deletingLastPathComponent()
@@ -21,6 +23,9 @@ final class VersionDetailsCompatibilityTests: XCTestCase {
 
   // MARK: - New Version Format Tests
 
+  /// 测试解析新版本格式
+  /// 验证新版本（1.13+）使用结构化 arguments 而非 minecraftArguments
+  /// 测试参数提取功能正常工作
   func testParseNewVersionFormat() throws {
     // 测试新版本格式 (26.1-snapshot-1)
     let data = try loadFixture(named: "26.1-snapshot-1.json")
@@ -55,6 +60,8 @@ final class VersionDetailsCompatibilityTests: XCTestCase {
 
   // MARK: - Downloads Compatibility Tests
 
+  /// 测试下载字段的兼容性
+  /// 验证可选的下载字段（serverMappings、clientMappings、windowsServer）正确解析
   func testDownloadsFields() throws {
     let data = try loadFixture(named: "26.1-snapshot-1.json")
 
@@ -87,6 +94,9 @@ final class VersionDetailsCompatibilityTests: XCTestCase {
 
   // MARK: - Extension Methods Tests
 
+  /// 测试 VersionDetails 扩展方法
+  /// 验证便捷属性和方法正确工作
+  /// 包括：clientDownloadURL、totalDownloadSize、formattedDownloadSize
   func testExtensionMethodsWithNewVersion() throws {
     let data = try loadFixture(named: "26.1-snapshot-1.json")
 
@@ -111,6 +121,9 @@ final class VersionDetailsCompatibilityTests: XCTestCase {
 
   // MARK: - Java Version Tests
 
+  /// 测试 Java 版本信息
+  /// 验证 Java 版本要求能够正确解析
+  /// 测试便捷属性：isJava8、isJava17Plus、isJava21Plus
   func testJavaVersionInfo() throws {
     let data = try loadFixture(named: "26.1-snapshot-1.json")
 
@@ -132,6 +145,9 @@ final class VersionDetailsCompatibilityTests: XCTestCase {
 
   // MARK: - Libraries Tests
 
+  /// 测试依赖库信息
+  /// 验证库列表能够正确解析
+  /// 测试库的便捷属性和 OS 过滤功能
   func testLibrariesInfo() throws {
     let data = try loadFixture(named: "26.1-snapshot-1.json")
 
@@ -160,6 +176,8 @@ final class VersionDetailsCompatibilityTests: XCTestCase {
 
   // MARK: - Performance Tests
 
+  /// 测试版本详情解析性能
+  /// 衡量 JSON 解码的性能表现
   func testParsingPerformance() throws {
     let data = try loadFixture(named: "26.1-snapshot-1.json")
 

@@ -13,6 +13,9 @@ final class VersionManifestCompatibilityTests: XCTestCase {
 
   // MARK: - v1 API Tests
 
+  /// 测试 v1 版本清单 API
+  /// 验证 v1 API 能够正确获取版本列表
+  /// v1 API 不包含 sha1 和 complianceLevel 字段
   func testFetchVersionManifestV1() async throws {
     let manifest = try await client.fetchVersionManifest(useV2: false)
 
@@ -29,6 +32,9 @@ final class VersionManifestCompatibilityTests: XCTestCase {
 
   // MARK: - v2 API Tests
 
+  /// 测试 v2 版本清单 API
+  /// 验证 v2 API 能够正确获取版本列表
+  /// v2 API 包含额外的 sha1 和 complianceLevel 字段
   func testFetchVersionManifestV2() async throws {
     let manifest = try await client.fetchVersionManifest(useV2: true)
 
@@ -49,6 +55,8 @@ final class VersionManifestCompatibilityTests: XCTestCase {
 
   // MARK: - Default API Tests
 
+  /// 测试默认版本清单 API
+  /// 验证不指定版本时默认使用 v2 API
   func testFetchVersionManifestDefault() async throws {
     // 默认应该使用 v2
     let manifest = try await client.fetchVersionManifest()
@@ -63,6 +71,9 @@ final class VersionManifestCompatibilityTests: XCTestCase {
 
   // MARK: - Compatibility Tests
 
+  /// 测试 v1 和 v2 API 的兼容性
+  /// 验证两个 API 返回的基础数据一致
+  /// 确认 v2 包含额外字段而 v1 不包含
   func testVersionInfoCompatibility() async throws {
     let manifestV1 = try await client.fetchVersionManifest(useV2: false)
     let manifestV2 = try await client.fetchVersionManifest(useV2: true)
@@ -91,6 +102,9 @@ final class VersionManifestCompatibilityTests: XCTestCase {
     XCTAssertNotNil(v2First.complianceLevel, "v2 应该有合规等级")
   }
 
+  /// 测试版本信息扩展方法
+  /// 验证 VersionInfo 的便捷属性和方法正确工作
+  /// 包括：hasSHA1、hasComplianceLevel、isFromV2API、formattedReleaseDate
   func testVersionInfoExtensions() async throws {
     let manifest = try await client.fetchVersionManifest(useV2: true)
     let version = manifest.versions.first!
@@ -108,6 +122,9 @@ final class VersionManifestCompatibilityTests: XCTestCase {
 
   // MARK: - Integration Tests
 
+  /// 测试从不同 API 获取版本详情的集成功能
+  /// 验证无论版本信息来自 v1 还是 v2 API，都能成功获取详细信息
+  /// 确认详细信息内容一致
   func testFetchVersionDetailsFromBothAPIs() async throws {
     // 从 v1 获取版本信息
     let manifestV1 = try await client.fetchVersionManifest(useV2: false)
@@ -136,6 +153,8 @@ final class VersionManifestCompatibilityTests: XCTestCase {
     print("从 v2 获取的详情: \(detailsFromV2.id)")
   }
 
+  /// 测试并比较 v1 和 v2 API 的响应内容
+  /// 打印详细的比较信息用于验证两个 API 的数据一致性
   func testCompareAPIResponses() async throws {
     print("\n=== 比较 v1 和 v2 API ===")
 

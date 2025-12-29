@@ -9,6 +9,9 @@ import XCTest
 
 final class Version1_12_1Tests: XCTestCase {
 
+  /// 测试解析 1.12.1 版本详情
+  /// 验证能够正确解析旧版本格式（使用 minecraftArguments 而非 arguments）
+  /// 测试原生库的解析（只有 classifiers 没有 artifact 的库）
   func testParse1_12_1() throws {
     // 使用 #file 获取当前测试文件的路径，然后导航到 Fixtures 目录
     let testFileURL = URL(fileURLWithPath: #file)
