@@ -6,7 +6,7 @@
 import Foundation
 
 /// Minecraft API 客户端配置
-public struct MinecraftAPIConfiguration {
+public struct MinecraftAPIConfiguration: APIConfiguration {
 
   public let versionBaseURL: String
   public let apiBaseURL: String

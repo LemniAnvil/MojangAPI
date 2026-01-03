@@ -6,7 +6,7 @@
 import Foundation
 
 /// CurseForge API 配置
-public struct CurseForgeAPIConfiguration {
+public struct CurseForgeAPIConfiguration: APIConfiguration {
   /// API 密钥
   public let apiKey: String
   /// 基础 URL
@@ -66,22 +66,13 @@ public enum CurseForgeAPIError: Error, LocalizedError {
 public class CurseForgeAPIClient {
 
   private let configuration: CurseForgeAPIConfiguration
-  private let session: URLSession
-  private let decoder: JSONDecoder
+  private let baseClient: BaseAPIClient
 
   public init(configuration: CurseForgeAPIConfiguration) {
     self.configuration = configuration
 
-    let config = URLSessionConfiguration.default
-    config.timeoutIntervalForRequest = configuration.timeout
-    config.requestCachePolicy = configuration.cachePolicy
-    self.session = URLSession(configuration: config)
-
-    // 配置 JSON 解码器
-    self.decoder = JSONDecoder()
-
     // CurseForge API 使用自定义日期格式（ISO8601 但毫秒位数可变）
-    decoder.dateDecodingStrategy = .custom { decoder in
+    let dateDecodingStrategy = JSONDecoder.DateDecodingStrategy.custom { decoder in
       let container = try decoder.singleValueContainer()
       let dateString = try container.decode(String.self)
 
@@ -113,6 +104,11 @@ public class CurseForgeAPIClient {
         debugDescription: "无法解析日期字符串: \(dateString)"
       )
     }
+
+    self.baseClient = BaseAPIClient(
+      configuration: configuration,
+      dateDecodingStrategy: dateDecodingStrategy
+    )
   }
 
   // MARK: - 搜索 API
@@ -228,37 +224,40 @@ public class CurseForgeAPIClient {
   // MARK: - 私有方法
 
   private func request<T: Decodable>(url: URL) async throws -> T {
-    var request = URLRequest(url: url)
-    request.httpMethod = "GET"
-    request.setValue("application/json", forHTTPHeaderField: "Accept")
-    request.setValue(configuration.apiKey, forHTTPHeaderField: "x-api-key")
+    let headers = [
+      "Accept": "application/json",
+      "x-api-key": configuration.apiKey,
+    ]
 
     do {
-      let (data, response) = try await session.data(for: request)
-
-      guard let httpResponse = response as? HTTPURLResponse else {
-        throw CurseForgeAPIError.networkError(URLError(.badServerResponse))
-      }
-
-      switch httpResponse.statusCode {
-      case 200...299:
-        break
-      case 401:
-        throw CurseForgeAPIError.unauthorized
-      case 429:
-        throw CurseForgeAPIError.rateLimitExceeded
-      default:
-        throw CurseForgeAPIError.serverError(statusCode: httpResponse.statusCode)
-      }
-
-      return try decoder.decode(T.self, from: data)
-
+      return try await baseClient.get(url: url, headers: headers)
+    } catch let error as NetworkError {
+      throw mapNetworkError(error)
     } catch let error as CurseForgeAPIError {
       throw error
-    } catch let error as DecodingError {
-      throw CurseForgeAPIError.decodingError(error)
     } catch {
       throw CurseForgeAPIError.networkError(error)
+    }
+  }
+
+  /// 将 NetworkError 映射为 CurseForgeAPIError
+  private func mapNetworkError(_ error: NetworkError) -> CurseForgeAPIError {
+    switch error {
+    case .invalidResponse:
+      return .networkError(URLError(.badServerResponse))
+    case .httpError(let statusCode, _):
+      switch statusCode {
+      case 401:
+        return .unauthorized
+      case 429:
+        return .rateLimitExceeded
+      default:
+        return .serverError(statusCode: statusCode)
+      }
+    case .decodingError(let decodingError):
+      return .decodingError(decodingError)
+    case .networkError(let networkError):
+      return .networkError(networkError)
     }
   }
 }

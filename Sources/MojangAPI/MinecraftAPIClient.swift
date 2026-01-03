@@ -9,22 +9,16 @@ import Foundation
 public class MinecraftAPIClient {
 
   private let configuration: MinecraftAPIConfiguration
-  private let session: URLSession
-  private let decoder: JSONDecoder
+  private let baseClient: BaseAPIClient
 
   public init(
     configuration: MinecraftAPIConfiguration = MinecraftAPIConfiguration()
   ) {
     self.configuration = configuration
-
-    let config = URLSessionConfiguration.default
-    config.timeoutIntervalForRequest = configuration.timeout
-    config.requestCachePolicy = configuration.cachePolicy
-    self.session = URLSession(configuration: config)
-
-    // 配置 JSON 解码器
-    self.decoder = JSONDecoder()
-    decoder.dateDecodingStrategy = .iso8601
+    self.baseClient = BaseAPIClient(
+      configuration: configuration,
+      dateDecodingStrategy: .iso8601
+    )
   }
 
   // MARK: - 版本 API
@@ -112,7 +106,7 @@ public class MinecraftAPIClient {
     let limitedNames = Array(names.prefix(10))
     let url = try buildURL("\(configuration.apiBaseURL)/profiles/minecraft")
     let data = try await postRequest(url: url, body: limitedNames)
-    let results = try decoder.decode([[String: String]].self, from: data)
+    let results = try baseClient.decoder.decode([[String: String]].self, from: data)
     return Dictionary(
       uniqueKeysWithValues: results.compactMap { dict in
         guard let name = dict["name"], let id = dict["id"] else { return nil }
@@ -123,7 +117,7 @@ public class MinecraftAPIClient {
   /// 获取被封禁服务器的 SHA1 哈希列表
   public func fetchBlockedServers() async throws -> [String] {
     let url = try buildURL("\(configuration.sessionServerBaseURL)/blockedservers")
-    let (data, response) = try await session.data(from: url)
+    let (data, response) = try await baseClient.session.data(from: url)
     guard let httpResponse = response as? HTTPURLResponse,
       (200...299).contains(httpResponse.statusCode)
     else {
@@ -263,15 +257,16 @@ public class MinecraftAPIClient {
     }
 
     do {
-      let (data, response) = try await session.data(from: secureURL)
-
-      guard let httpResponse = response as? HTTPURLResponse,
-        (200...299).contains(httpResponse.statusCode)
-      else {
-        throw MinecraftAPIError.textureDownloadFailed
-      }
-
+      // 使用 baseClient 下载，返回类型为 Data
+      let data: Data = try await baseClient.get(url: secureURL)
       return data
+    } catch let error as NetworkError {
+      switch error {
+      case .httpError:
+        throw MinecraftAPIError.textureDownloadFailed
+      default:
+        throw mapNetworkError(error)
+      }
     } catch let error as MinecraftAPIError {
       throw error
     } catch {
@@ -289,41 +284,34 @@ public class MinecraftAPIClient {
   }
 
   private func postRequest<T: Encodable>(url: URL, body: T) async throws -> Data {
-    var request = URLRequest(url: url)
-    request.httpMethod = "POST"
-    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.httpBody = try JSONEncoder().encode(body)
-    let (data, response) = try await session.data(for: request)
-    guard let httpResponse = response as? HTTPURLResponse,
-      (200...299).contains(httpResponse.statusCode)
-    else {
-      throw MinecraftAPIError.serverError(
-        statusCode: (response as? HTTPURLResponse)?.statusCode ?? 0)
+    do {
+      return try await baseClient.post(url: url, body: body)
+    } catch let error as NetworkError {
+      throw mapNetworkError(error)
+    } catch {
+      throw MinecraftAPIError.networkError(error)
     }
-    return data
   }
 
   private func request<T: Decodable>(url: URL, notFoundError: MinecraftAPIError? = nil) async throws
     -> T
   {
     do {
-      let (data, response) = try await session.data(from: url)
-
-      guard let httpResponse = response as? HTTPURLResponse else {
-        throw MinecraftAPIError.networkError(URLError(.badServerResponse))
-      }
-
-      guard (200...299).contains(httpResponse.statusCode) else {
+      return try await baseClient.get(url: url)
+    } catch let error as NetworkError {
+      switch error {
+      case .httpError(let statusCode, let data):
         throw parseErrorResponse(
-          data: data, statusCode: httpResponse.statusCode, notFoundError: notFoundError)
+          data: data, statusCode: statusCode, notFoundError: notFoundError)
+      case .decodingError(let decodingError):
+        throw MinecraftAPIError.decodingError(decodingError)
+      case .invalidResponse:
+        throw MinecraftAPIError.networkError(URLError(.badServerResponse))
+      case .networkError(let networkError):
+        throw MinecraftAPIError.networkError(networkError)
       }
-
-      return try decoder.decode(T.self, from: data)
-
     } catch let error as MinecraftAPIError {
       throw error
-    } catch let error as DecodingError {
-      throw MinecraftAPIError.decodingError(error)
     } catch {
       throw MinecraftAPIError.networkError(error)
     }
@@ -332,7 +320,7 @@ public class MinecraftAPIClient {
   private func parseErrorResponse(data: Data, statusCode: Int, notFoundError: MinecraftAPIError?)
     -> MinecraftAPIError
   {
-    if let errorResponse = try? decoder.decode(APIErrorResponse.self, from: data) {
+    if let errorResponse = try? baseClient.decoder.decode(APIErrorResponse.self, from: data) {
       let message = errorResponse.errorMessage ?? errorResponse.error ?? "Unknown error"
 
       if message.contains("Not a valid UUID") {
@@ -356,5 +344,19 @@ public class MinecraftAPIClient {
     }
 
     return .serverError(statusCode: statusCode)
+  }
+
+  /// 将 NetworkError 映射为 MinecraftAPIError
+  private func mapNetworkError(_ error: NetworkError) -> MinecraftAPIError {
+    switch error {
+    case .invalidResponse:
+      return .networkError(URLError(.badServerResponse))
+    case .httpError(let statusCode, _):
+      return .serverError(statusCode: statusCode)
+    case .decodingError(let decodingError):
+      return .decodingError(decodingError)
+    case .networkError(let networkError):
+      return .networkError(networkError)
+    }
   }
 }
