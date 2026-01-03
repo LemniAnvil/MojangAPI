@@ -80,7 +80,7 @@ public class CurseForgeAPIClient {
 
   // MARK: - 搜索 API
 
-  /// 搜索整合包
+  /// 搜索整合包（便捷方法）
   /// - Parameters:
   ///   - searchFilter: 搜索关键词
   ///   - sortField: 排序字段
@@ -99,8 +99,7 @@ public class CurseForgeAPIClient {
     gameVersion: String? = nil,
     categoryIds: [Int]? = nil
   ) async throws -> CFModsSearchResponse {
-    return try await searchMods(
-      gameId: .minecraft,
+    let request = CFSearchRequest(
       classId: .modpack,
       searchFilter: searchFilter,
       sortField: sortField,
@@ -110,9 +109,10 @@ public class CurseForgeAPIClient {
       gameVersion: gameVersion,
       categoryIds: categoryIds
     )
+    return try await search(request)
   }
 
-  /// 搜索 Mods
+  /// 搜索 Mods（便捷方法）
   /// - Parameters:
   ///   - gameId: 游戏 ID
   ///   - classId: 类别 ID
@@ -137,42 +137,42 @@ public class CurseForgeAPIClient {
     categoryIds: [Int]? = nil,
     modLoaderType: CFModLoader? = nil
   ) async throws -> CFModsSearchResponse {
+    let request = CFSearchRequest(
+      gameId: gameId,
+      classId: classId,
+      searchFilter: searchFilter,
+      sortField: sortField,
+      sortOrder: sortOrder,
+      index: index,
+      pageSize: pageSize,
+      gameVersion: gameVersion,
+      categoryIds: categoryIds,
+      modLoaderType: modLoaderType
+    )
+    return try await search(request)
+  }
+
+  /// 使用 CFSearchRequest 执行搜索
+  /// - Parameter request: 搜索请求对象
+  /// - Returns: 搜索结果
+  ///
+  /// 示例：
+  /// ```swift
+  /// let request = CFSearchRequest.modpacks(searchFilter: "tech")
+  ///     .gameVersion("1.20.1")
+  ///     .pageSize(50)
+  ///
+  /// let results = try await client.search(request)
+  /// ```
+  public func search(_ request: CFSearchRequest) async throws -> CFModsSearchResponse {
     var components = URLComponents(string: "\(configuration.baseURL)/mods/search")!
-
-    var queryItems: [URLQueryItem] = [
-      URLQueryItem(name: "gameId", value: "\(gameId.rawValue)"),
-      URLQueryItem(name: "classId", value: "\(classId.rawValue)"),
-      URLQueryItem(name: "sortField", value: "\(sortField.rawValue)"),
-      URLQueryItem(name: "sortOrder", value: sortOrder.rawValue),
-      URLQueryItem(name: "index", value: "\(index)"),
-      URLQueryItem(name: "pageSize", value: "\(pageSize)"),
-    ]
-
-    if let searchFilter = searchFilter, !searchFilter.isEmpty {
-      queryItems.append(URLQueryItem(name: "searchFilter", value: searchFilter))
-    }
-
-    if let gameVersion = gameVersion {
-      queryItems.append(URLQueryItem(name: "gameVersion", value: gameVersion))
-    }
-
-    if let categoryIds = categoryIds, !categoryIds.isEmpty {
-      for categoryId in categoryIds {
-        queryItems.append(URLQueryItem(name: "categoryId", value: "\(categoryId)"))
-      }
-    }
-
-    if let modLoaderType = modLoaderType {
-      queryItems.append(URLQueryItem(name: "modLoaderType", value: "\(modLoaderType.rawValue)"))
-    }
-
-    components.queryItems = queryItems
+    components.queryItems = request.toQueryItems()
 
     guard let url = components.url else {
       throw CurseForgeAPIError.invalidURL
     }
 
-    return try await request(url: url)
+    return try await self.request(url: url)
   }
 
   // MARK: - Mod 详情 API

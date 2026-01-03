@@ -16,7 +16,7 @@ final class CurseForgeAPITests: XCTestCase {
 
     // 从环境变量读取 API Key
     // 运行测试前需要设置: export CURSEFORGE_API_KEY="your_api_key"
-    guard let apiKey = ProcessInfo.processInfo.environment["CURSEFORGE_API_KEY"] else {
+    guard let apiKey = "$2a$10$3kFa9lBWciEK.lsp7NyCSupZ3XmlAYixZQ9fTczqsz1/.W9QDnLUy" ?? ProcessInfo.processInfo.environment["CURSEFORGE_API_KEY"] else {
       XCTFail("请设置环境变量 CURSEFORGE_API_KEY")
       return
     }

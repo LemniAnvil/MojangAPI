@@ -25,7 +25,7 @@ struct ModpacksView: View {
     // 示例: 从 Info.plist 或环境变量读取
     let apiKey =
       ProcessInfo.processInfo.environment["CURSEFORGE_API_KEY"]
-      ?? "YOUR_API_KEY_HERE"  // 开发时替换为你的 API Key
+      ?? "your-api-key-here"  // 开发时替换为你的 API Key
 
     let config = CurseForgeAPIConfiguration(apiKey: apiKey)
     self.client = CurseForgeAPIClient(configuration: config)

@@ -100,12 +100,63 @@ public class MinecraftAPIClient {
     return try await request(url: url, notFoundError: .playerNotFound(uuid))
   }
 
-  /// 批量获取多个用户名的 UUID（最多10个）
-  public func fetchUUIDs(names: [String]) async throws -> [String: String] {
+  /// 批量获取多个用户名的 UUID（支持自动分批）
+  ///
+  /// Mojang API 限制每次请求最多 10 个用户名。此方法会自动将大量请求分批处理。
+  ///
+  /// - Parameters:
+  ///   - names: 要查询的用户名列表（支持任意数量）
+  ///   - batchSize: 每批处理的数量（默认 10，最大 10）
+  /// - Returns: 用户名到 UUID 的映射字典。未找到的用户名不会出现在结果中。
+  ///
+  /// - Note:
+  ///   - 如果请求超过 10 个用户名，会自动分批并发送多个请求
+  ///   - 重复的用户名会被自动去重
+  ///   - 空字符串或空白字符串会被自动过滤
+  ///
+  /// 示例：
+  /// ```swift
+  /// // 查询少量用户名（单次请求）
+  /// let results = try await client.fetchUUIDs(names: ["Notch", "jeb_"])
+  ///
+  /// // 查询大量用户名（自动分批）
+  /// let manyNames = ["player1", "player2", ..., "player50"]
+  /// let allResults = try await client.fetchUUIDs(names: manyNames)
+  /// // 自动发送 5 次请求（每次 10 个）
+  /// ```
+  public func fetchUUIDs(names: [String], batchSize: Int = 10) async throws -> [String: String] {
     guard !names.isEmpty else { return [:] }
-    let limitedNames = Array(names.prefix(10))
+
+    // 清理并去重用户名
+    let cleanedNames = Array(Set(names.map { $0.trimmingCharacters(in: .whitespaces) }))
+      .filter { !$0.isEmpty }
+
+    guard !cleanedNames.isEmpty else { return [:] }
+
+    // 限制 batchSize 不超过 API 限制
+    let effectiveBatchSize = min(batchSize, 10)
+
+    // 如果数量在单批范围内，直接处理
+    if cleanedNames.count <= effectiveBatchSize {
+      return try await fetchUUIDBatch(names: cleanedNames)
+    }
+
+    // 分批处理
+    var allResults: [String: String] = [:]
+    let batches = cleanedNames.chunked(into: effectiveBatchSize)
+
+    for batch in batches {
+      let batchResults = try await fetchUUIDBatch(names: batch)
+      allResults.merge(batchResults) { _, new in new }
+    }
+
+    return allResults
+  }
+
+  /// 执行单批 UUID 查询（内部方法）
+  private func fetchUUIDBatch(names: [String]) async throws -> [String: String] {
     let url = try buildURL("\(configuration.apiBaseURL)/profiles/minecraft")
-    let data = try await postRequest(url: url, body: limitedNames)
+    let data = try await postRequest(url: url, body: names)
     let results = try baseClient.decoder.decode([[String: String]].self, from: data)
     return Dictionary(
       uniqueKeysWithValues: results.compactMap { dict in

@@ -114,6 +114,58 @@ final class PlayerUUIDTests: XCTestCase {
     XCTAssertTrue(results.isEmpty)
   }
 
+  /// 测试批量获取 UUID - 自动去重
+  func testFetchUUIDsDeduplication() async throws {
+    // 包含重复的用户名
+    let names = ["1ris_W", "Notch", "1ris_W", "Notch"]
+    let results = try await client.fetchUUIDs(names: names)
+
+    // 虽然输入了 4 个，但只有 2 个唯一的
+    XCTAssertTrue(results.count <= 2, "应该自动去重")
+    XCTAssertNotNil(results["1ris_W"])
+    XCTAssertNotNil(results["Notch"])
+
+    print("去重测试: 输入 \(names.count) 个，结果 \(results.count) 个")
+  }
+
+  /// 测试批量获取 UUID - 自动清理空白
+  func testFetchUUIDsTrimming() async throws {
+    // 包含空白字符的用户名
+    let names = [" 1ris_W ", "  Notch", "", "   "]
+    let results = try await client.fetchUUIDs(names: names)
+
+    // 应该过滤掉空字符串，并清理空白
+    XCTAssertFalse(results.isEmpty, "应该成功查询有效用户名")
+    XCTAssertNotNil(results["1ris_W"])
+    XCTAssertNotNil(results["Notch"])
+
+    print("清理测试: 输入 \(names.count) 个，结果 \(results.count) 个")
+  }
+
+  /// 测试批量获取 UUID - 仅空白字符
+  func testFetchUUIDsOnlyWhitespace() async throws {
+    let names = ["", "  ", "   ", "\t", "\n"]
+    let results = try await client.fetchUUIDs(names: names)
+
+    // 应该返回空结果
+    XCTAssertTrue(results.isEmpty, "只有空白字符应该返回空结果")
+  }
+
+  /// 测试批量获取 UUID - 混合有效和无效
+  func testFetchUUIDsMixedValidInvalid() async throws {
+    let names = ["1ris_W", "NonExistentPlayer999", "Notch"]
+    let results = try await client.fetchUUIDs(names: names)
+
+    // 应该只返回存在的玩家
+    XCTAssertTrue(results.count >= 1, "应该至少找到一个有效玩家")
+
+    // 检查是否包含已知存在的玩家
+    let hasValidPlayer = results["1ris_W"] != nil || results["Notch"] != nil
+    XCTAssertTrue(hasValidPlayer, "应该找到至少一个已知玩家")
+
+    print("混合测试: 输入 \(names.count) 个，找到 \(results.count) 个")
+  }
+
   /// 测试获取被封禁服务器列表
   func testFetchBlockedServers() async throws {
     let servers = try await client.fetchBlockedServers()
